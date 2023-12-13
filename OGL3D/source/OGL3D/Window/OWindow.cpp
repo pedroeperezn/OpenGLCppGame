@@ -61,9 +61,7 @@ OWindow::OWindow()
 	ShowWindow((HWND)m_handle,SW_SHOW);
 	UpdateWindow((HWND)m_handle);
 
-
-
-	//Create openGL Render Context
+	//Create openGL Render Context (display context)
 	auto hDC = GetDC(HWND(m_handle));
 
 	int pixelFormatAttributes[] = {
@@ -78,6 +76,7 @@ OWindow::OWindow()
 		0
 	};
 
+	//set pixel format attributes
 	int pixelFormat = 0;
 	UINT numFormats = 0;
 	wglChoosePixelFormatARB(hDC, pixelFormatAttributes, nullptr, 1, &pixelFormat,&numFormats);
@@ -95,6 +94,7 @@ OWindow::OWindow()
 		0
 	};
 
+	//create context attributes
 	m_context = wglCreateContextAttribsARB(hDC, 0, openGLAttributes);
 	assert(m_context);
 }
@@ -107,6 +107,7 @@ OWindow::~OWindow()
 
 void OWindow::MakeCurrentContext()
 {
+	//set current window as current context
 	wglMakeCurrent(GetDC(HWND(m_handle)), HGLRC(m_context));
 }
 

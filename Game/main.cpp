@@ -3,6 +3,7 @@
 
 int main() 
 {
+	//run game
 	try 
 	{
 		OGame myFirstGame;
@@ -10,6 +11,7 @@ int main()
 		
 	}
 
+	//if game didn't ran, throw error
 	catch(const std::exception& e)
 	{
 		std::cout << e.what() << std::endl;

@@ -3,9 +3,12 @@
 
 OGame::OGame()
 {
+	//game constructor creates a unique pointer to a graphics engine instance
 	m_graphicsEngine = std::make_unique<OGraphicsEngine>();
+	//unique pointer to a window instance
 	GameDisplay = std::make_unique<OWindow>();
 
+	//make current context the context of the OWindow
 	GameDisplay->MakeCurrentContext();
 }
 
@@ -19,8 +22,10 @@ void OGame::onCreate()
 
 void OGame::onUpdate()
 {
+	//on update, change the color of the screen to red
 	m_graphicsEngine->clear(OVec4(255, 0, 0, 1));
 
+	//present screen
 	GameDisplay->Present(false);
 }
 

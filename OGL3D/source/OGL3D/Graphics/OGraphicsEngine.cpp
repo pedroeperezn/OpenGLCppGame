@@ -14,6 +14,7 @@ OGraphicsEngine::OGraphicsEngine()
 	//DEFINES THE MESSAGE CALLBACK 
 	wc.lpfnWndProc = DefWindowProc;
 	
+	//define style
 	wc.style = CS_OWNDC;
 
 	//do assert check to see if my window class was created correctly
@@ -28,8 +29,10 @@ OGraphicsEngine::OGraphicsEngine()
 
 	assert(dummyWindow);
 
+	//creates a dummy device context with glad->GetDC
 	auto dummyDC = GetDC(dummyWindow);
 	
+	//set all pixel formatting
 	PIXELFORMATDESCRIPTOR pixelFormatDesc = {};
 	pixelFormatDesc.nSize = sizeof(PIXELFORMATDESCRIPTOR);
 	pixelFormatDesc.nVersion = 1;
@@ -44,11 +47,14 @@ OGraphicsEngine::OGraphicsEngine()
 	auto pixelFormat = ChoosePixelFormat(dummyDC, &pixelFormatDesc);
 	SetPixelFormat(dummyDC,pixelFormat,&pixelFormatDesc);
 
+	//create context for window
 	auto dummyContext = wglCreateContext(dummyDC);
 	assert(dummyContext);
 
+	//assign the dummy context as the current context
 	wglMakeCurrent(dummyDC, dummyContext);
 
+	//error check in case the glad functions were not loaded propperly
 	if (!gladLoadWGL(dummyDC)) 
 	{
 		throw std::runtime_error("Load Error in OGraphicsEngine -- gladLoadWGL failed");
@@ -59,6 +65,7 @@ OGraphicsEngine::OGraphicsEngine()
 		throw std::runtime_error("Load Error in OGraphicsEngine -- gladLoadGL failed");
 	}
 
+	//make current context
 	wglMakeCurrent(dummyDC, 0);
 	wglDeleteContext(dummyContext);
 	ReleaseDC(dummyWindow, dummyDC);

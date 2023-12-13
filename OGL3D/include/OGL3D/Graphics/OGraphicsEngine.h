@@ -10,6 +10,7 @@ public:
 	~OGraphicsEngine();
 
 public: 
+	//apply color to window
 	void clear(const OVec4& color);
 
 };
