@@ -1,4 +1,7 @@
 #pragma once
+#include <glad/glad_wgl.h>
+#include <glad/glad.h>
+
 class OWindow
 {
 
@@ -8,14 +11,13 @@ public:
 	OWindow();
 	~OWindow();
 	
-	//makes null handle of the window
-	void onDestroy();
 
-	//checks if the window is closed, thise will help close game if window is closed
-	bool isClosed();
+	void MakeCurrentContext();
+	void Present(bool vsync);
 
 private:
 
 	void* m_handle = nullptr;
+	void* m_context = nullptr;
 };
 

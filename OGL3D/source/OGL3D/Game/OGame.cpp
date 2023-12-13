@@ -3,28 +3,56 @@
 
 OGame::OGame()
 {
-	GameDisplay = std::unique_ptr<OWindow>(new OWindow());
+	m_graphicsEngine = std::make_unique<OGraphicsEngine>();
+	GameDisplay = std::make_unique<OWindow>();
+
+	GameDisplay->MakeCurrentContext();
 }
 
 OGame::~OGame()
 {
 }
 
+void OGame::onCreate()
+{
+}
+
+void OGame::onUpdate()
+{
+	m_graphicsEngine->clear(OVec4(255, 0, 0, 1));
+
+	GameDisplay->Present(false);
+}
+
+void OGame::onQuit()
+{
+}
+
 void OGame::run()
 {
-	//While the game is running m 
-	MSG msg;
+	onCreate();
 
-	while (isRunning && !GameDisplay->isClosed()) 
+	//While the game is running m 
+	MSG msg = {};
+
+	while (isRunning) 
 	{
 		if (PeekMessage(&msg, NULL, NULL, NULL, PM_REMOVE))
 		{
+			if (msg.message == WM_QUIT)
+			{
+				isRunning = false;
+				continue;
+			}
+
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
 
-		Sleep(1);
+		onUpdate();
 	}
+
+	onQuit();
 }
 
 void OGame::quit()
